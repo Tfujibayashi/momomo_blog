@@ -1,31 +1,35 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 import { Footer, Header } from '@components/organisms';
 import { Edit, Home, NotFound, SignIn } from '@components/pages';
-import { AuthProvider } from '@components/providers';
 
 import 'react-toastify/dist/ReactToastify.css';
+import { AuthContextStore, useAuthContext } from '~/hooks';
 
 export const App = (): JSX.Element => {
+  const { loading } = useAuthContext() as AuthContextStore;
+
   return (
-    <BrowserRouter>
+    <div>
       <ToastContainer />
 
-      <AuthProvider>
-        <Header />
+      <Header />
 
-        <main>
+      <main>
+        {loading ? (
+          <div>読み込み中</div>
+        ) : (
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/edit" element={<Edit />} />
             <Route path="/*" element={<NotFound />} />
           </Routes>
-        </main>
+        )}
+      </main>
 
-        <Footer />
-      </AuthProvider>
-    </BrowserRouter>
+      <Footer />
+    </div>
   );
 };

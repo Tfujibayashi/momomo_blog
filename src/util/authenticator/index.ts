@@ -1,7 +1,10 @@
 import { FirebaseError, FirebaseOptions, getApp, getApps, initializeApp } from 'firebase/app';
 import {
   Auth,
+  browserLocalPersistence,
+  browserSessionPersistence,
   getAuth,
+  indexedDBLocalPersistence,
   initializeAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
@@ -31,7 +34,13 @@ class Authenticator {
     if (!getApps().length) {
       const app = initializeApp(this.config);
 
-      this.auth = initializeAuth(app);
+      this.auth = initializeAuth(app, {
+        persistence: [
+          indexedDBLocalPersistence,
+          browserLocalPersistence,
+          browserSessionPersistence,
+        ],
+      });
     } else {
       const app = getApp();
       this.auth = getAuth(app);

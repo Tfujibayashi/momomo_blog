@@ -69,7 +69,11 @@ export const useAuth = () => {
 
   // https://reffect.co.jp/react/react-native-firebase#i-3
   useEffect(() => {
+    setState({ loading: true });
+
     const unsubscribe = authenticator.onAuthStateChanged(authenticator.auth, (user) => {
+      console.log(user);
+
       if (user) {
         authenticator.setUser(user);
         setState({ user });
@@ -81,7 +85,7 @@ export const useAuth = () => {
     });
 
     return () => unsubscribe();
-  }, [setState]);
+  }, []);
 
   return { ...state, signIn, signOut };
 };
