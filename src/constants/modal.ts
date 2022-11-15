@@ -1,0 +1,1 @@
+export const MODAL_VELOCITY_Y_THRESHOLD = 500;

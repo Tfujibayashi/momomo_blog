@@ -1,0 +1,26 @@
+.sign-in-form {
+  max-width: 50%;
+  min-height: 10rem;
+  padding: 0.5rem;
+  margin: auto;
+  border: 1px white solid;
+}
+
+.sign-in-username,
+.sign-in-password {
+  display: block;
+  width: calc(100% - 3rem);
+  padding: 0.5rem;
+  margin: 1rem;
+  color: white;
+  background: transparent;
+  border: 0 solid;
+  border: 1px white solid;
+  transition: 250ms background ease-in;
+
+  &:focus {
+    color: black;
+    background: white;
+    transition: 250ms background ease-in;
+  }
+}

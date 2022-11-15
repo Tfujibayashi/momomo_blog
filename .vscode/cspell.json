@@ -1,0 +1,21 @@
+{
+  "language": "en",
+  "ignoreRegExpList": [
+    "[０-９Ａ-Ｚａ-ｚぁ-んァ-ヶ亜-熙纊-黑]+"
+  ],
+  "words": [
+    "toastify"
+  ],
+  "ignorePaths": [
+    ".git",
+    ".vscode",
+    "node_modules",
+    ".eslintignore",
+    ".eslintrc.js",
+    ".prettierrc.js",
+    "package.json",
+    "README.md",
+    "tsconfig.json",
+    "yarn.lock"
+  ]
+}
