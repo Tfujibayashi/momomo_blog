@@ -1,4 +1,9 @@
 /**
+ * CommonClass
+ */
+export * from './common-class';
+
+/**
  * Entities
  */
 export * from './entities';
