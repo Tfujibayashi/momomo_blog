@@ -72,8 +72,6 @@ export const useAuth = () => {
     setState({ loading: true });
 
     const unsubscribe = authenticator.onAuthStateChanged(authenticator.auth, (user) => {
-      console.log(user);
-
       if (user) {
         authenticator.setUser(user);
         setState({ user });

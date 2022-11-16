@@ -4,6 +4,9 @@
     "[０-９Ａ-Ｚａ-ｚぁ-んァ-ヶ亜-熙纊-黑]+"
   ],
   "words": [
+    "firestore",
+    "momomo",
+    "predeploy",
     "toastify"
   ],
   "ignorePaths": [
