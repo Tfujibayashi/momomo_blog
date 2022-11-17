@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { AuthContext, useAuth } from '~/hooks';
 
 type Props = {

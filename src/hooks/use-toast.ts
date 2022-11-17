@@ -1,13 +1,14 @@
+import { useCallback } from 'react';
 import { toast } from 'react-toastify';
 
 export const useToast = () => {
-  const showSuccessToast = (message: string) => {
+  const showSuccessToast = useCallback((message: string) => {
     toast.success(message);
-  };
+  }, []);
 
-  const showErrorToast = (message: string) => {
+  const showErrorToast = useCallback((message: string) => {
     toast.error(message);
-  };
+  }, []);
 
   return {
     showSuccessToast,
