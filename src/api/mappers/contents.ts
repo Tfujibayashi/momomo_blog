@@ -10,15 +10,15 @@ import {
 } from '~/models';
 
 export class ContentsMapper {
-  transformToContentList(entities: ContentEntity[]): ContentList {
+  mapContentList(entities: ContentEntity[]): ContentList {
     const contents = entities.map((entity) => {
-      return this.transformToContent(entity);
+      return this.mapContent(entity);
     });
 
     return ContentList.create(contents);
   }
 
-  transformToContent(entity: ContentEntity): Content {
+  mapContent(entity: ContentEntity): Content {
     const { id, title, text, imagePath, createdAt, updatedAt, deletedAt } = entity;
 
     return Content.create({

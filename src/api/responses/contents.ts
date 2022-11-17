@@ -1,3 +1,3 @@
 import { ContentEntity } from '~/api';
 
-export type GetContents = ContentEntity[];
+export type GetContentsResponse = ContentEntity[];
