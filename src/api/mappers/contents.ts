@@ -26,9 +26,9 @@ export class ContentsMapper {
       title: ContentTitle.create(title),
       text: ContentText.create(text),
       imagePath: ImagePath.create(imagePath),
-      createdAt: DateTime.create(createdAt),
-      updatedAt: DateTime.create(updatedAt),
-      deletedAt: DateTime.create(deletedAt),
+      createdAt: DateTime.create(createdAt.toDate()),
+      updatedAt: DateTime.create(updatedAt.toDate()),
+      deletedAt: DateTime.create(deletedAt.toDate()),
     });
   }
 }

@@ -79,7 +79,7 @@ export abstract class EntityList<T> extends BaseModel<Array<T>> {
   }
 }
 
-export abstract class ValueObject<T extends string | number> extends BaseModel<T> {
+export abstract class ValueObject<T extends string | number | Date> extends BaseModel<T> {
   get isEmpty(): boolean {
     if (typeof this.value === 'string') {
       return this.value === EMPTY_STRING;

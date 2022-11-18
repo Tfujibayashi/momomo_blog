@@ -16,9 +16,9 @@ export class ContentsParser {
       title: title.value,
       text: text.value,
       imagePath: imagePath.value,
-      createdAt: createdAt.value,
-      updatedAt: updatedAt.value,
-      deletedAt: deletedAt.value,
+      createdAt: createdAt.timeStamp,
+      updatedAt: updatedAt.timeStamp,
+      deletedAt: deletedAt.timeStamp,
     };
   }
 }

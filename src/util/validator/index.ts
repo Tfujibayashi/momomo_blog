@@ -35,6 +35,12 @@ export default class Validator {
     }
   }
 
+  dateObject(): void {
+    if (!(this.value instanceof Date)) {
+      throw new Error(`${this.description}の型が不正です`);
+    }
+  }
+
   /**
    * 文字数の最大値チェック
    */

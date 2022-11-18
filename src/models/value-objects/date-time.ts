@@ -1,25 +1,29 @@
-import { EMPTY_STRING } from '~/constants';
+import { Timestamp } from 'firebase/firestore';
+
 import { ValueObject } from '~/models/common-class';
-import { DateTimeType } from '~/types';
+import { TimeStamp } from '~/types';
 import Validator from '~/util/validator';
 
-export class DateTime extends ValueObject<DateTimeType> {
-  static create(value: string): DateTime {
+export class DateTime extends ValueObject<Date> {
+  get timeStamp(): TimeStamp {
+    return Timestamp.fromDate(this.value);
+  }
+
+  static create(value: Date): DateTime {
     // validation
     DateTime.validate(value);
 
-    return new DateTime(value as DateTimeType);
+    return new DateTime(value);
   }
 
-  static validate(value: string): void {
+  static validate(value: Date): void {
     const validator = new Validator({ value, description: '日時' });
 
-    validator.string();
-    validator.dateTime();
+    validator.dateObject();
   }
 
   static empty(): DateTime {
-    return new DateTime(EMPTY_STRING as DateTimeType);
+    return new DateTime(new Date());
   }
 
   copy(): DateTime {
