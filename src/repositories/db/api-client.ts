@@ -1,7 +1,7 @@
 // Rest API Client
 // https://blog.wh-plus.co.jp/entry/2020/12/21/104033
 
-import { ErrorResponse, GrandChildren, Owns, Schema } from '~/api/type';
+import { ErrorResponse, GrandChildren, Owns, Schema } from '~/repositories/db/type';
 import { API_ERROR, API_ERROR_TARGET, NETWORK_ERROR, NOT_FOUND_ERROR } from '~/constants';
 import { ApiError, ErrorCode, ErrorMessage } from '~/models';
 import authenticator from '~/util/authenticator';

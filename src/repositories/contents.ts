@@ -7,9 +7,9 @@ import {
   SnapshotOptions,
 } from 'firebase/firestore';
 
-import { ContentEntity, ContentsMapper, ContentsParser } from '~/api';
 import { db } from '~/firebase';
 import { Content, ContentList } from '~/models';
+import { ContentEntity, ContentsMapper, ContentsParser } from '~/repositories/db';
 
 export default class ContentsRepository {
   // apiClient: typeof ScheduleClient;

@@ -1,4 +1,4 @@
-import { GetContentsResponse } from '~/api';
+import { GetContentsResponse } from '~/repositories/db';
 
 export interface ContentsSchema {
   resource: {

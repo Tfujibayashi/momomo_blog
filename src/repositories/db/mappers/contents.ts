@@ -1,4 +1,4 @@
-import { ContentEntity } from '~/api';
+import { ContentEntity } from '~/repositories/db';
 import {
   Content,
   ContentId,
