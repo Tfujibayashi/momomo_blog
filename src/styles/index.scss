@@ -1,4 +1,5 @@
 @import url('~nes.css/css/nes.css');
+@import 'variables';
 
 @font-face {
   font-family: NuMoChi;
@@ -29,9 +30,21 @@ a {
   box-sizing: border-box;
 }
 
+header {
+  max-width: $xl;
+  margin: auto;
+  margin-top: 1rem;
+}
+
 main {
+  max-width: $xl;
   min-height: calc(100vh - 50px);
   padding-top: 50px;
+  margin: auto;
+}
+
+footer {
+  max-width: $xl;
   margin: auto;
 }
 

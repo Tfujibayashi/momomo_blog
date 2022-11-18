@@ -1,21 +1,15 @@
 .home {
-  width: 90%;
-  margin: auto;
   margin-top: 2rem;
 
-  &-content {
-    width: 90%;
-    margin: auto;
+  &--content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4rem 3rem;
+    justify-content: center;
 
-    &-skeleton-wrapper {
-      display: flex;
-      flex-wrap: wrap;
-      row-gap: 4rem;
-      justify-content: space-between;
-
-      &-item {
-        width: 300px;
-      }
+    &--item {
+      width: 30%;
+      min-width: 360px;
     }
   }
 }

@@ -1,8 +1,7 @@
 export type Styles = {
   home: string;
-  'home-content': string;
-  'home-content-skeleton-wrapper': string;
-  'home-content-skeleton-wrapper-item': string;
+  'home--content': string;
+  'home--content--item': string;
 };
 
 export type ClassNames = keyof Styles;
