@@ -9,9 +9,10 @@ export class ContentsParser {
   }
 
   parseContent(content: Content): ContentEntity {
-    const { title, text, imagePath, createdAt, updatedAt, deletedAt } = content.props;
+    const { id, title, text, imagePath, createdAt, updatedAt, deletedAt } = content.props;
 
     return {
+      id: id.value,
       title: title.value,
       text: text.value,
       imagePath: imagePath.value,

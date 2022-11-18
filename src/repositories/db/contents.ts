@@ -1,22 +1,26 @@
 import {
   collection,
+  doc,
   DocumentData,
+  Firestore,
   FirestoreDataConverter,
+  getDoc,
   getDocs,
   QueryDocumentSnapshot,
   SnapshotOptions,
 } from 'firebase/firestore';
 
-import { db } from '~/firebase';
-import { ContentEntity, ContentsMapper, ContentsParser } from '~/repositories/db';
+import { ContentEntity } from '~/repositories/db';
+
+const COLLECTION_NAME = 'contents';
 
 export class ContentsDataBase {
-  private parser: ContentsParser;
-  private mapper: ContentsMapper;
+  private collectionName;
+  private db;
 
-  constructor() {
-    this.parser = new ContentsParser();
-    this.mapper = new ContentsMapper();
+  constructor(db: Firestore) {
+    this.db = db;
+    this.collectionName = COLLECTION_NAME;
   }
 
   private toFirestore = (entity: ContentEntity): DocumentData => {
@@ -43,9 +47,20 @@ export class ContentsDataBase {
   };
 
   public getContents = async (): Promise<ContentEntity[]> => {
-    const contentsCollection = collection(db, 'contents').withConverter(this.contentConverter);
-    const snapshot = await getDocs(contentsCollection);
+    const collectionRef = collection(this.db, this.collectionName).withConverter(
+      this.contentConverter,
+    );
+
+    const snapshot = await getDocs(collectionRef);
 
     return snapshot.docs.map((doc) => doc.data());
+  };
+
+  public getContent = async (id: string): Promise<ContentEntity | undefined> => {
+    const docRef = doc(this.db, this.collectionName, id).withConverter(this.contentConverter);
+
+    const snapshot = await getDoc(docRef);
+
+    return snapshot.data();
   };
 }
