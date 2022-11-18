@@ -1,51 +1,23 @@
-import {
-  collection,
-  DocumentData,
-  FirestoreDataConverter,
-  getDocs,
-  QueryDocumentSnapshot,
-  SnapshotOptions,
-} from 'firebase/firestore';
-
-import { db } from '~/firebase';
-import { Content, ContentList } from '~/models';
-import { ContentEntity, ContentsMapper, ContentsParser } from '~/repositories/db';
+import { ContentsDataBase } from './db/contents';
+import { ContentList } from '~/models';
+import { ContentsMapper, ContentsParser } from '~/repositories/db';
 
 export default class ContentsRepository {
-  // apiClient: typeof ScheduleClient;
   private parser: ContentsParser;
   private mapper: ContentsMapper;
 
+  private db;
+
   constructor() {
-    // this.apiClient = ScheduleClient;
     this.parser = new ContentsParser();
     this.mapper = new ContentsMapper();
+
+    this.db = new ContentsDataBase();
   }
 
-  toFirestore = (content: Content): DocumentData => {
-    return this.parser.parseContent(content);
-  };
+  public getContentList = async (): Promise<ContentList> => {
+    const contents = await this.db.getContents();
 
-  fromFirestore = (
-    snapshot: QueryDocumentSnapshot<ContentEntity>,
-    options: SnapshotOptions,
-  ): Content => {
-    const data = snapshot.data(options);
-
-    return this.mapper.mapContent(data);
-  };
-
-  public contentConverter: FirestoreDataConverter<Content> = {
-    toFirestore: this.toFirestore,
-    fromFirestore: this.fromFirestore,
-  };
-
-  public getContents = async (): Promise<ContentList> => {
-    const contentsCollection = collection(db, 'contents').withConverter(this.contentConverter);
-    const snapshot = await getDocs(contentsCollection);
-
-    const hoge = snapshot.docs.map((doc) => doc.data());
-
-    return ContentList.create(hoge);
+    return this.mapper.mapContentList(contents);
   };
 }

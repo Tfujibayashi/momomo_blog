@@ -20,7 +20,7 @@ export const useHome = () => {
     });
 
     try {
-      const contentList = await ContentsRepository.getContents();
+      const contentList = await ContentsRepository.getContentList();
 
       setState({
         contentList,
