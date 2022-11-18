@@ -1,5 +1,5 @@
-import { ContentEntity } from '~/repositories/db';
 import { Content, ContentList } from '~/models';
+import { ContentEntity } from '~/repositories/db';
 
 export class ContentsParser {
   parseContentList(contentList: ContentList): ContentEntity[] {
@@ -9,10 +9,9 @@ export class ContentsParser {
   }
 
   parseContent(content: Content): ContentEntity {
-    const { id, title, text, imagePath, createdAt, updatedAt, deletedAt } = content.props;
+    const { title, text, imagePath, createdAt, updatedAt, deletedAt } = content.props;
 
     return {
-      id: id.value,
       title: title.value,
       text: text.value,
       imagePath: imagePath.value,
