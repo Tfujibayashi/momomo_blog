@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { HomeContentSkeleton } from '@components/organisms';
+import { HomeContent, HomeContentSkeleton } from '@components/organisms';
 import styles from '@styles/home.module.scss';
 
 import { HomeContextStore, useHomeContext } from '~/hooks';
@@ -16,8 +16,7 @@ export const Home = (): JSX.Element => {
     <div className={styles['home']}>
       <p>ポートフォリオを兼ねた自作ブログです。</p>
 
-      {/* {isGetting ? <HomeContentSkeleton /> : <HomeContent />} */}
-      <HomeContentSkeleton />
+      {isGetting ? <HomeContentSkeleton /> : <HomeContent />}
     </div>
   );
 };
