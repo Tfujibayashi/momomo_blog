@@ -1,0 +1,13 @@
+.edit {
+  display: flex;
+  margin-top: 2rem;
+
+  textarea {
+    width: 100%;
+    height: 100vh;
+  }
+
+  &--preview {
+    width: 100%;
+  }
+}
