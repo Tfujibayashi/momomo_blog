@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 import { Footer, Header } from '@components/organisms';
-import { Edit, Home, NotFound, SignIn } from '@components/pages';
+import { Content, Edit, Home, NotFound, SignIn } from '@components/pages';
 
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthContextStore, useAuthContext } from '~/hooks';
@@ -24,6 +24,8 @@ export const App = (): JSX.Element => {
             <Route path="/" element={<Home />} />
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/edit" element={<Edit />} />
+            <Route path="/:contentId" element={<Content />} />
+
             <Route path="/*" element={<NotFound />} />
           </Routes>
         )}

@@ -5,6 +5,11 @@ export * from './organisms/app/footer';
 export * from './organisms/app/header';
 
 /**
+ * Content
+ */
+export * from './organisms/content/content-text';
+
+/**
  * Home
  */
 export * from './organisms/home/home-content';

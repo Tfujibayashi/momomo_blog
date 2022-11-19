@@ -3,7 +3,7 @@ import { Id } from '~/models/value-objects/id';
 
 export class ContentId extends Id {
   static create(value: string): ContentId {
-    ContentId.validate(value, 'ユーザーID');
+    ContentId.validate(value, 'コンテントID');
 
     return new ContentId(value);
   }

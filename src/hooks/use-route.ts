@@ -1,7 +1,9 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export const useRoute = () => {
   const navigate = useNavigate();
+
+  const params = useParams();
 
   const push = (page: string) => {
     navigate(page);
@@ -12,6 +14,7 @@ export const useRoute = () => {
   };
 
   return {
+    params,
     push,
     back,
   };

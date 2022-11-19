@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
 import { App } from '@components/pages';
-import { AuthProvider, HomeProvider } from '@components/providers';
+import { AuthProvider, ContentProvider, HomeProvider } from '@components/providers';
 
 import '@styles/index.scss';
 import reportWebVitals from './reportWebVitals';
@@ -14,7 +14,9 @@ root.render(
     <BrowserRouter>
       <AuthProvider>
         <HomeProvider>
-          <App />
+          <ContentProvider>
+            <App />
+          </ContentProvider>
         </HomeProvider>
       </AuthProvider>
     </BrowserRouter>
