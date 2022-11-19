@@ -1,4 +1,5 @@
 export * from './molecules/content-box';
+export * from './molecules/markdown';
 
 /**
  * Skeleton

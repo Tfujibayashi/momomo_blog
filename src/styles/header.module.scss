@@ -24,9 +24,3 @@
     }
   }
 }
-
-@include mq(lg) {
-  .header {
-    height: 80px;
-  }
-}

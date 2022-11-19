@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import { ContentText } from '@components/organisms';
+import styles from '@styles/content.module.scss';
 
 import { ContentContextStore, useContentContext, useRoute } from '~/hooks';
 import { ContentId } from '~/models';
@@ -21,5 +22,5 @@ export const Content = (): JSX.Element => {
     }
   }, [contentId.isNotEmpty, getContent]);
 
-  return <div>{isGetting ? <>読み込み中</> : <ContentText />}</div>;
+  return <div className={styles['content']}>{isGetting ? <>読み込み中</> : <ContentText />}</div>;
 };
