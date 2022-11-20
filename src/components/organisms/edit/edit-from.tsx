@@ -1,28 +1,42 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { Markdown } from '@components/molecules';
 import styles from '@styles/edit.module.scss';
 
-import { useEdit, useRoute } from '~/hooks';
-import { ContentId } from '~/models';
+import { EditsContextStore, useEdit, useEditsContext, useKey } from '~/hooks';
 
 export const EditForm = (): JSX.Element => {
-  const { inputs, setInputs, init } = useEdit();
-  const { params } = useRoute();
+  const { content } = useEditsContext() as EditsContextStore;
+  const { inputs, setState, setInputs, saveContent } = useEdit();
+  const { keyBind } = useKey();
+
+  const init = useCallback(() => {
+    setState({
+      content,
+    });
+
+    setInputs({
+      markdownText: content.props.text.value,
+    });
+  }, [content, setInputs, setState]);
 
   useEffect(() => {
-    const contentId = ContentId.create(params.contentId as string);
-
-    if (contentId.isNotEmpty) {
-      void init(contentId);
-    }
-  }, [init, params.contentId]);
+    init();
+  }, [init]);
 
   const handleChangeMarkdownText = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
     setInputs({
       markdownText: event.target.value,
     });
   };
+
+  const handleOnPressSaveShortCutKey = useCallback(() => {
+    void saveContent();
+  }, [saveContent]);
+
+  useEffect(() => {
+    keyBind('s', handleOnPressSaveShortCutKey);
+  }, [handleOnPressSaveShortCutKey, keyBind]);
 
   return (
     <div className={styles.edit}>

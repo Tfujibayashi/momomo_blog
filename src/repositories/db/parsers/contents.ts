@@ -1,24 +1,23 @@
-import { Content, ContentList } from '~/models';
-import { ContentEntity } from '~/repositories/db';
+import { Content } from '~/models';
+import { AddContentRequestBody, SaveContentRequestBody } from '~/repositories/db';
 
 export class ContentsParser {
-  parseContentList(contentList: ContentList): ContentEntity[] {
-    return contentList.value.map((content) => {
-      return this.parseContent(content);
-    });
-  }
-
-  parseContent(content: Content): ContentEntity {
-    const { id, title, text, imagePath, createdAt, updatedAt, deletedAt } = content.props;
+  parseSaveContentRequestBody(content: Content): SaveContentRequestBody {
+    const { title, text } = content.props;
 
     return {
-      id: id.value,
-      title: title.value,
+      // title: title.value,
       text: text.value,
-      imagePath: imagePath.value,
-      createdAt: createdAt.timeStamp,
-      updatedAt: updatedAt.timeStamp,
-      deletedAt: deletedAt.timeStamp,
+    };
+  }
+
+  parseAddContentRequestBody(content: Content): AddContentRequestBody {
+    const { title, text, imagePath } = content.props;
+
+    return {
+      // title: title.value,
+      text: text.value,
+      // imagePath: imagePath.value,
     };
   }
 }

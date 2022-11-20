@@ -22,13 +22,13 @@ export class ContentsMapper {
     const { id, title, text, imagePath, createdAt, updatedAt, deletedAt } = entity;
 
     return Content.create({
-      id: ContentId.create(id),
-      title: ContentTitle.create(title),
+      id: id ? ContentId.create(id) : ContentId.empty(),
+      title: ContentTitle.create(title as string),
       text: ContentText.create(text),
-      imagePath: ImagePath.create(imagePath),
+      imagePath: imagePath ? ImagePath.create(imagePath) : ImagePath.empty(),
       createdAt: DateTime.create(createdAt.toDate()),
       updatedAt: DateTime.create(updatedAt.toDate()),
-      deletedAt: DateTime.create(deletedAt.toDate()),
+      deletedAt: deletedAt ? DateTime.create(deletedAt.toDate()) : DateTime.empty(),
     });
   }
 }

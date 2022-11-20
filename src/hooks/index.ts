@@ -3,6 +3,7 @@ export * from './use-content';
 export * from './use-edit';
 export * from './use-edits';
 export * from './use-home';
+export * from './use-key';
 export * from './use-route';
 export * from './use-sign-in';
 export * from './use-state';

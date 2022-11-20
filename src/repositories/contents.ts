@@ -2,16 +2,14 @@ import { Firestore } from 'firebase/firestore';
 
 import { ContentsDataBase } from './db/contents';
 import { Content, ContentId, ContentList } from '~/models';
-import { ContentsMapper, ContentsParser } from '~/repositories/db';
+import { ContentsMapper } from '~/repositories/db';
 
 export default class ContentsRepository {
-  private parser: ContentsParser;
   private mapper: ContentsMapper;
 
   private db;
 
   constructor(db: Firestore) {
-    this.parser = new ContentsParser();
     this.mapper = new ContentsMapper();
 
     this.db = new ContentsDataBase(db);
@@ -27,5 +25,13 @@ export default class ContentsRepository {
     const content = await this.db.getContent(contentId.value);
 
     return content ? this.mapper.mapContent(content) : Content.empty();
+  };
+
+  public saveContent = async (content: Content): Promise<void> => {
+    if (content.props.id.isEmpty) {
+      await this.db.addContent(content);
+    } else {
+      await this.db.saveContent(content);
+    }
   };
 }

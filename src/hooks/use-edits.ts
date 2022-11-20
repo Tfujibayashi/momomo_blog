@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext } from 'react';
 
 import { useState, useToast } from '~/hooks';
-import { ContentList } from '~/models';
+import { Content, ContentId, ContentList } from '~/models';
 import Repositories from '~/repositories';
 
 export const useEdits = () => {
@@ -10,13 +10,15 @@ export const useEdits = () => {
   const { showErrorToast } = useToast();
 
   const [state, setState] = useState({
+    isListGetting: false,
     isGetting: false,
     contentList: ContentList.empty(),
+    content: Content.empty(),
   });
 
   const getContentList = useCallback(async () => {
     setState({
-      isGetting: true,
+      isListGetting: true,
     });
 
     try {
@@ -29,13 +31,37 @@ export const useEdits = () => {
       showErrorToast((e as Error).message);
     }
     setState({
-      isGetting: false,
+      isListGetting: false,
     });
   }, [ContentsRepository, showErrorToast]);
+
+  const getContent = useCallback(
+    async (contentId: ContentId) => {
+      setState({
+        isGetting: true,
+      });
+
+      try {
+        const content = await ContentsRepository.getContent(contentId);
+
+        setState({
+          content,
+        });
+      } catch (e) {
+        showErrorToast((e as Error).message);
+      }
+
+      setState({
+        isGetting: false,
+      });
+    },
+    [ContentsRepository, showErrorToast],
+  );
 
   return {
     ...state,
     getContentList,
+    getContent,
   };
 };
 

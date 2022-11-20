@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
 import { useState, useToast } from '~/hooks';
-import { Content, ContentId } from '~/models';
+import { Content, ContentText } from '~/models';
 import Repositories from '~/repositories';
 
 export const useEdit = () => {
@@ -10,7 +10,7 @@ export const useEdit = () => {
   const { showErrorToast } = useToast();
 
   const [state, setState] = useState({
-    isGetting: false,
+    isSaving: false,
     content: Content.empty(),
   });
 
@@ -18,45 +18,35 @@ export const useEdit = () => {
     markdownText: '',
   });
 
-  const getContent = useCallback(
-    async (contentId: ContentId) => {
-      setState({
-        isGetting: true,
-      });
+  const makeSaveContent = useCallback(() => {
+    return state.content.assign({
+      text: ContentText.create(inputs.markdownText),
+    });
+  }, [inputs.markdownText, state.content]);
 
-      try {
-        const content = await ContentsRepository.getContent(contentId);
+  const saveContent = useCallback(async () => {
+    setState({
+      isSaving: true,
+    });
 
-        setState({
-          content,
-        });
-      } catch (e) {
-        showErrorToast((e as Error).message);
-      }
-      setState({
-        isGetting: false,
-      });
-    },
-    [ContentsRepository, showErrorToast],
-  );
+    try {
+      const content = makeSaveContent();
 
-  const init = useCallback(
-    async (contentId: ContentId) => {
-      await getContent(contentId);
+      await ContentsRepository.saveContent(content);
+    } catch (e) {
+      showErrorToast((e as Error).message);
+    }
 
-      setInputs({
-        markdownText: state.content.props.text.value,
-      });
-    },
-    [getContent, state.content.props.text.value],
-  );
+    setState({
+      isSaving: false,
+    });
+  }, [ContentsRepository, makeSaveContent, showErrorToast]);
 
   return {
     ...state,
     setState,
     inputs,
     setInputs,
-    getContent,
-    init,
+    saveContent,
   };
 };
