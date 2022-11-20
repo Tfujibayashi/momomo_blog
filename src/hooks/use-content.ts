@@ -11,28 +11,30 @@ export const useContent = () => {
 
   const [state, setState] = useState({
     isGetting: false,
-    contentId: ContentId.empty(),
     content: Content.empty(),
   });
 
-  const getContent = useCallback(async () => {
-    setState({
-      isGetting: true,
-    });
-
-    try {
-      const content = await ContentsRepository.getContent(state.contentId);
-
+  const getContent = useCallback(
+    async (contentId: ContentId) => {
       setState({
-        content,
+        isGetting: true,
       });
-    } catch (e) {
-      showErrorToast((e as Error).message);
-    }
-    setState({
-      isGetting: false,
-    });
-  }, [ContentsRepository, showErrorToast, state.contentId]);
+
+      try {
+        const content = await ContentsRepository.getContent(contentId);
+
+        setState({
+          content,
+        });
+      } catch (e) {
+        showErrorToast((e as Error).message);
+      }
+      setState({
+        isGetting: false,
+      });
+    },
+    [ContentsRepository, showErrorToast],
+  );
 
   return {
     ...state,

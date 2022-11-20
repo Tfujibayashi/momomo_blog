@@ -7,20 +7,16 @@ import { ContentContextStore, useContentContext, useRoute } from '~/hooks';
 import { ContentId } from '~/models';
 
 export const Content = (): JSX.Element => {
-  const { isGetting, contentId, setState, getContent } = useContentContext() as ContentContextStore;
+  const { isGetting, getContent } = useContentContext() as ContentContextStore;
   const { params } = useRoute();
 
   useEffect(() => {
-    setState({
-      contentId: ContentId.create(params.contentId as string),
-    });
-  }, [params, setState]);
+    const contentId = ContentId.create(params.contentId as string);
 
-  useEffect(() => {
     if (contentId.isNotEmpty) {
-      void getContent();
+      void getContent(contentId);
     }
-  }, [contentId.isNotEmpty, getContent]);
+  }, [getContent, params.contentId]);
 
   return <div className={styles['content']}>{isGetting ? <>読み込み中</> : <ContentText />}</div>;
 };

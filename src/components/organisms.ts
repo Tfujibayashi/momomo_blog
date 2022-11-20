@@ -10,6 +10,16 @@ export * from './organisms/app/header';
 export * from './organisms/content/content-text';
 
 /**
+ * Edit
+ */
+export * from './organisms/edit/edit-from';
+
+/**
+ * Edits
+ */
+export * from './organisms/edits/edits-list';
+
+/**
  * Home
  */
 export * from './organisms/home/home-content';
