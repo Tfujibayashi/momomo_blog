@@ -1,6 +1,7 @@
 export * from './use-auth';
 export * from './use-content';
 export * from './use-edit';
+export * from './use-edits';
 export * from './use-home';
 export * from './use-route';
 export * from './use-sign-in';
