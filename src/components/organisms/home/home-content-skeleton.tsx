@@ -8,7 +8,7 @@ export const HomeContentSkeleton = (): JSX.Element => {
         .fill(0)
         .map((_, index) => (
           <div key={index} className={styles['home--content--item']}>
-            <SkeletonBox height={200} />
+            <SkeletonBox height={200} width={300} />
           </div>
         ))}
     </div>

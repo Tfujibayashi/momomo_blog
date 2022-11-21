@@ -7,26 +7,22 @@ import { EditsContextStore, useEdit, useEditsContext, useKey } from '~/hooks';
 
 export const EditForm = (): JSX.Element => {
   const { content } = useEditsContext() as EditsContextStore;
-  const { inputs, setState, setInputs, saveContent } = useEdit();
+  const { inputs, setInputs, init, saveContent } = useEdit();
   const { keyBind } = useKey();
 
-  const init = useCallback(() => {
-    setState({
-      content,
-    });
-
-    setInputs({
-      markdownText: content.props.text.value,
-    });
-  }, [content, setInputs, setState]);
-
   useEffect(() => {
-    init();
-  }, [init]);
+    init(content);
+  }, [content, init]);
 
-  const handleChangeMarkdownText = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
+  const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setInputs({
-      markdownText: event.target.value,
+      title: event.target.value,
+    });
+  };
+
+  const handleChangeText = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
+    setInputs({
+      text: event.target.value,
     });
   };
 
@@ -39,11 +35,20 @@ export const EditForm = (): JSX.Element => {
   }, [handleOnPressSaveShortCutKey, keyBind]);
 
   return (
-    <div className={styles.edit}>
-      <textarea value={inputs.markdownText} onChange={handleChangeMarkdownText} />
+    <div>
+      <input
+        className={styles['edit--title']}
+        placeholder="タイトル"
+        value={inputs.title}
+        onChange={handleChangeTitle}
+      />
 
-      <div className={styles['edit--preview']}>
-        <Markdown markdownText={inputs.markdownText} />
+      <div className={styles['edit--form']}>
+        <textarea value={inputs.text} onChange={handleChangeText} />
+
+        <div className={styles['edit--form--preview']}>
+          <Markdown markdownText={inputs.text} />
+        </div>
       </div>
     </div>
   );

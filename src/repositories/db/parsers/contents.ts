@@ -6,7 +6,7 @@ export class ContentsParser {
     const { title, text } = content.props;
 
     return {
-      // title: title.value,
+      title: title.value,
       text: text.value,
     };
   }
@@ -15,7 +15,7 @@ export class ContentsParser {
     const { title, text, imagePath } = content.props;
 
     return {
-      // title: title.value,
+      title: title.value,
       text: text.value,
       // imagePath: imagePath.value,
     };

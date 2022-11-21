@@ -13,7 +13,7 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 
-import { Content } from '~/models';
+import { Content, ContentId } from '~/models';
 import { ContentEntity, ContentsParser } from '~/repositories/db';
 
 const COLLECTION_NAME = 'contents';
@@ -62,8 +62,10 @@ export class ContentsDataBase {
     return snapshot.docs.map((doc) => doc.data());
   };
 
-  public getContent = async (id: string): Promise<ContentEntity | undefined> => {
-    const docRef = doc(this.db, this.collectionName, id).withConverter(this.contentConverter);
+  public getContent = async (contentId: ContentId): Promise<ContentEntity | undefined> => {
+    const docRef = doc(this.db, this.collectionName, contentId.value).withConverter(
+      this.contentConverter,
+    );
 
     const snapshot = await getDoc(docRef);
 
@@ -94,6 +96,16 @@ export class ContentsDataBase {
       ...request,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
+    });
+  };
+
+  public deleteContent = async (contentId: ContentId): Promise<void> => {
+    const docRef = doc(this.db, this.collectionName, contentId.value).withConverter(
+      this.contentConverter,
+    );
+
+    await updateDoc(docRef, {
+      deletedAt: serverTimestamp(),
     });
   };
 }

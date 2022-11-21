@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import { EditsList } from '@components/organisms/edits/edits-list';
+import styles from '@styles/edits.module.scss';
 
 import {
   AuthContextStore,
@@ -13,20 +14,18 @@ import {
 export const Edits = (): JSX.Element => {
   const { user } = useAuthContext() as AuthContextStore;
   const { getContentList } = useEditsContext() as EditsContextStore;
-  const { push } = useRoute();
-
-  useEffect(() => {
-    if (!user) {
-      push('/');
-    }
-  }, [push, user]);
+  const { notFoundPage } = useRoute();
 
   useEffect(() => {
     void getContentList();
   }, [getContentList]);
 
+  if (!user) {
+    return notFoundPage();
+  }
+
   return (
-    <div>
+    <div className={styles['edits']}>
       <h2>記事一覧</h2>
 
       <EditsList />

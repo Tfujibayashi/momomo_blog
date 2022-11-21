@@ -13,14 +13,8 @@ import { ContentId } from '~/models';
 
 export const Edit = (): JSX.Element => {
   const { user } = useAuthContext() as AuthContextStore;
-  const { getContent } = useEditsContext() as EditsContextStore;
-  const { push, params } = useRoute();
-
-  useEffect(() => {
-    if (!user) {
-      push('/');
-    }
-  }, [push, user]);
+  const { content, getContent } = useEditsContext() as EditsContextStore;
+  const { params, notFoundPage } = useRoute();
 
   useEffect(() => {
     const contentId = ContentId.create(params.contentId as string);
@@ -30,8 +24,14 @@ export const Edit = (): JSX.Element => {
     }
   }, [getContent, params.contentId]);
 
+  if (!user) {
+    return notFoundPage();
+  }
+
   return (
     <div>
+      <h2>{content.isEmpty ? '新規作成' : '編集'}</h2>
+
       <EditForm />
     </div>
   );

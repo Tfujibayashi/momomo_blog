@@ -22,7 +22,7 @@ export default class ContentsRepository {
   };
 
   public getContent = async (contentId: ContentId): Promise<Content> => {
-    const content = await this.db.getContent(contentId.value);
+    const content = await this.db.getContent(contentId);
 
     return content ? this.mapper.mapContent(content) : Content.empty();
   };
@@ -33,5 +33,9 @@ export default class ContentsRepository {
     } else {
       await this.db.saveContent(content);
     }
+  };
+
+  public deleteContent = async (contentId: ContentId): Promise<void> => {
+    await this.db.deleteContent(contentId);
   };
 }

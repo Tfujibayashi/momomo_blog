@@ -1,10 +1,10 @@
 export type SaveContentRequestBody = {
-  // title: string;
+  title: string;
   text: string;
 };
 
 export type AddContentRequestBody = {
-  // title: string;
+  title: string;
   text: string;
   // imagePath: string;
 };

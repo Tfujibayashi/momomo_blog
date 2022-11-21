@@ -12,6 +12,7 @@ export const useEdits = () => {
   const [state, setState] = useState({
     isListGetting: false,
     isGetting: false,
+    isDeleting: false,
     contentList: ContentList.empty(),
     content: Content.empty(),
   });
@@ -58,10 +59,30 @@ export const useEdits = () => {
     [ContentsRepository, showErrorToast],
   );
 
+  const deleteContent = useCallback(
+    async (contentId: ContentId) => {
+      setState({
+        isDeleting: true,
+      });
+
+      try {
+        await ContentsRepository.deleteContent(contentId);
+      } catch (e) {
+        showErrorToast((e as Error).message);
+      }
+
+      setState({
+        isDeleting: false,
+      });
+    },
+    [ContentsRepository, showErrorToast],
+  );
+
   return {
     ...state,
     getContentList,
     getContent,
+    deleteContent,
   };
 };
 

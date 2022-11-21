@@ -23,7 +23,7 @@ export class ContentsMapper {
 
     return Content.create({
       id: id ? ContentId.create(id) : ContentId.empty(),
-      title: ContentTitle.create(title as string),
+      title: title ? ContentTitle.create(title) : ContentTitle.empty(),
       text: ContentText.create(text),
       imagePath: imagePath ? ImagePath.create(imagePath) : ImagePath.empty(),
       createdAt: DateTime.create(createdAt.toDate()),
