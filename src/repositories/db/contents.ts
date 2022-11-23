@@ -7,14 +7,16 @@ import {
   FirestoreDataConverter,
   getDoc,
   getDocs,
+  query,
   QueryDocumentSnapshot,
   serverTimestamp,
   SnapshotOptions,
   updateDoc,
+  where,
 } from 'firebase/firestore';
 
 import { Content, ContentId } from '~/models';
-import { ContentEntity, ContentsParser } from '~/repositories/db';
+import { ContentEntity, ContentsParser, GetContentsQuery } from '~/repositories/db';
 
 const COLLECTION_NAME = 'contents';
 
@@ -52,12 +54,18 @@ export class ContentsDataBase {
     fromFirestore: this.fromFirestore,
   };
 
-  public getContents = async (): Promise<ContentEntity[]> => {
+  public getContents = async (_query: GetContentsQuery): Promise<ContentEntity[]> => {
     const collectionRef = collection(this.db, this.collectionName).withConverter(
       this.contentConverter,
     );
 
-    const snapshot = await getDocs(collectionRef);
+    let q = query(collectionRef);
+
+    if (_query.isActive) {
+      q = query(collectionRef, where('deletedAt', '==', null));
+    }
+
+    const snapshot = await getDocs(q);
 
     return snapshot.docs.map((doc) => doc.data());
   };
@@ -85,18 +93,21 @@ export class ContentsDataBase {
     });
   };
 
-  public addContent = async (content: Content): Promise<void> => {
+  public addContent = async (content: Content): Promise<string> => {
     const collectionRef = collection(this.db, this.collectionName).withConverter(
       this.contentConverter,
     );
 
     const request = this.parser.parseAddContentRequestBody(content);
 
-    await addDoc(collectionRef, {
-      ...request,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
-    });
+    return (
+      await addDoc(collectionRef, {
+        ...request,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+        deletedAt: null,
+      })
+    ).id;
   };
 
   public deleteContent = async (contentId: ContentId): Promise<void> => {
@@ -106,6 +117,16 @@ export class ContentsDataBase {
 
     await updateDoc(docRef, {
       deletedAt: serverTimestamp(),
+    });
+  };
+
+  public unDeleteContent = async (contentId: ContentId): Promise<void> => {
+    const docRef = doc(this.db, this.collectionName, contentId.value).withConverter(
+      this.contentConverter,
+    );
+
+    await updateDoc(docRef, {
+      deletedAt: null,
     });
   };
 }

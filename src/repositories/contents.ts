@@ -2,7 +2,7 @@ import { Firestore } from 'firebase/firestore';
 
 import { ContentsDataBase } from './db/contents';
 import { Content, ContentId, ContentList } from '~/models';
-import { ContentsMapper } from '~/repositories/db';
+import { ContentEntity, ContentsMapper, GetContentsQuery } from '~/repositories/db';
 
 export default class ContentsRepository {
   private mapper: ContentsMapper;
@@ -15,8 +15,10 @@ export default class ContentsRepository {
     this.db = new ContentsDataBase(db);
   }
 
-  public getContentList = async (): Promise<ContentList> => {
-    const contents = await this.db.getContents();
+  public getContentList = async (
+    query: GetContentsQuery = { isActive: true },
+  ): Promise<ContentList> => {
+    const contents = await this.db.getContents(query);
 
     return this.mapper.mapContentList(contents);
   };
@@ -24,18 +26,24 @@ export default class ContentsRepository {
   public getContent = async (contentId: ContentId): Promise<Content> => {
     const content = await this.db.getContent(contentId);
 
-    return content ? this.mapper.mapContent(content) : Content.empty();
+    return this.mapper.mapContent(content as ContentEntity);
+  };
+
+  public addContent = async (): Promise<ContentId> => {
+    const contentId = await this.db.addContent(Content.empty());
+
+    return ContentId.create(contentId);
   };
 
   public saveContent = async (content: Content): Promise<void> => {
-    if (content.props.id.isEmpty) {
-      await this.db.addContent(content);
-    } else {
-      await this.db.saveContent(content);
-    }
+    await this.db.saveContent(content);
   };
 
   public deleteContent = async (contentId: ContentId): Promise<void> => {
     await this.db.deleteContent(contentId);
+  };
+
+  public unDeleteContent = async (contentId: ContentId): Promise<void> => {
+    await this.db.unDeleteContent(contentId);
   };
 }

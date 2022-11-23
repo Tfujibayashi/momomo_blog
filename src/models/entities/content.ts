@@ -15,6 +15,10 @@ export class Content extends Entity<ContentProps> {
     return this.props.id.isEmpty;
   }
 
+  get isActive(): boolean {
+    return this.props.deletedAt.isEmpty;
+  }
+
   static create(props: ContentProps): Content {
     return new Content(props);
   }

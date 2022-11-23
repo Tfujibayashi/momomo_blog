@@ -7,11 +7,12 @@ import Repositories from '~/repositories';
 export const useEdits = () => {
   const { ContentsRepository } = Repositories;
 
-  const { showErrorToast } = useToast();
+  const { showSuccessToast, showErrorToast } = useToast();
 
   const [state, setState] = useState({
     isListGetting: false,
     isGetting: false,
+    isAdding: false,
     isDeleting: false,
     contentList: ContentList.empty(),
     content: Content.empty(),
@@ -23,7 +24,7 @@ export const useEdits = () => {
     });
 
     try {
-      const contentList = await ContentsRepository.getContentList();
+      const contentList = await ContentsRepository.getContentList({ isActive: false });
 
       setState({
         contentList,
@@ -59,14 +60,38 @@ export const useEdits = () => {
     [ContentsRepository, showErrorToast],
   );
 
+  const addContent = useCallback(async () => {
+    setState({
+      isAdding: true,
+    });
+
+    try {
+      const contentId = await ContentsRepository.addContent();
+
+      showSuccessToast('新規作成しました');
+
+      return contentId;
+    } catch (e) {
+      showErrorToast((e as Error).message);
+    }
+
+    setState({
+      isAdding: false,
+    });
+  }, [ContentsRepository, showErrorToast, showSuccessToast]);
+
   const deleteContent = useCallback(
-    async (contentId: ContentId) => {
+    async (contentId: ContentId, callBack?: () => Promise<void>) => {
       setState({
         isDeleting: true,
       });
 
       try {
         await ContentsRepository.deleteContent(contentId);
+
+        showSuccessToast('記事を削除しました');
+
+        callBack && (await callBack());
       } catch (e) {
         showErrorToast((e as Error).message);
       }
@@ -75,14 +100,39 @@ export const useEdits = () => {
         isDeleting: false,
       });
     },
-    [ContentsRepository, showErrorToast],
+    [ContentsRepository, showErrorToast, showSuccessToast],
+  );
+
+  const unDeleteContent = useCallback(
+    async (contentId: ContentId, callBack?: () => Promise<void>) => {
+      setState({
+        isDeleting: true,
+      });
+
+      try {
+        await ContentsRepository.unDeleteContent(contentId);
+
+        showSuccessToast('記事を復元しました');
+
+        callBack && (await callBack());
+      } catch (e) {
+        showErrorToast((e as Error).message);
+      }
+
+      setState({
+        isDeleting: false,
+      });
+    },
+    [ContentsRepository, showErrorToast, showSuccessToast],
   );
 
   return {
     ...state,
     getContentList,
     getContent,
+    addContent,
     deleteContent,
+    unDeleteContent,
   };
 };
 

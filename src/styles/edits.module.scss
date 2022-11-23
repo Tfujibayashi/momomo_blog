@@ -3,6 +3,11 @@
   margin: 0 auto;
   margin-top: 2rem;
 
+  &--content {
+    display: flex;
+    justify-content: space-between;
+  }
+
   &--list {
     width: 50%;
   }

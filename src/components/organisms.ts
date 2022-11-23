@@ -18,6 +18,7 @@ export * from './organisms/edit/edit-from';
  * Edits
  */
 export * from './organisms/edits/edits-list';
+export * from './organisms/edits/edits-menu';
 
 /**
  * Home

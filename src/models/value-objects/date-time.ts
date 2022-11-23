@@ -4,9 +4,13 @@ import { ValueObject } from '~/models/common-class';
 import { TimeStamp } from '~/types';
 import Validator from '~/util/validator';
 
-export class DateTime extends ValueObject<Date> {
+export class DateTime extends ValueObject<Date | null> {
   get timeStamp(): TimeStamp {
-    return Timestamp.fromDate(this.value);
+    return Timestamp.fromDate(this.value as Date);
+  }
+
+  get isEmpty(): boolean {
+    return this.value === null;
   }
 
   static create(value: Date): DateTime {
@@ -23,7 +27,7 @@ export class DateTime extends ValueObject<Date> {
   }
 
   static empty(): DateTime {
-    return new DateTime(new Date());
+    return new DateTime(null);
   }
 
   copy(): DateTime {

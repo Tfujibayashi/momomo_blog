@@ -1,41 +1,73 @@
 import React from 'react';
 
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
-import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt, faRecycle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { Spacer } from './spacer';
 
-type EditListItemBoxProps = {
+type EditListItemBoxProps<T> = {
+  item: T;
   title: string;
-  onClick?: () => void;
-  onClickEditIcon?: () => void;
-  onClickTrashIcon?: () => void;
+  isDeleted?: boolean;
+  onClick?: (() => void) | ((item: T) => void);
+  onClickEditIcon?: (() => void) | ((item: T) => void);
+  onClickTrashIcon?: (() => void) | ((item: T) => void);
+  onClickRecycleIcon?: (() => void) | ((item: T) => void);
 };
 
-export const EditListItemBox = ({
+export const EditListItemBox = <T,>({
+  item,
   title,
+  isDeleted = false,
   onClick,
   onClickEditIcon,
   onClickTrashIcon,
-}: EditListItemBoxProps): JSX.Element => {
-  const _onClickTrashIcon = (event: React.MouseEvent<SVGSVGElement, MouseEvent>): void => {
+  onClickRecycleIcon,
+}: EditListItemBoxProps<T>): JSX.Element => {
+  const _onClickTrashIcon = (event: React.MouseEvent<SVGSVGElement, MouseEvent>, item: T): void => {
     event.stopPropagation();
 
-    onClickTrashIcon && onClickTrashIcon();
+    onClickTrashIcon && onClickTrashIcon(item);
+  };
+
+  const _onClickRecycleIcon = (
+    event: React.MouseEvent<SVGSVGElement, MouseEvent>,
+    item: T,
+  ): void => {
+    event.stopPropagation();
+
+    onClickRecycleIcon && onClickRecycleIcon(item);
   };
 
   return (
     <div>
-      <a onClick={onClick} style={style.wrapper}>
-        <h2 style={style.title}>{title}</h2>
+      <a onClick={(): void => onClick && onClick(item)} style={style.wrapper}>
+        <div>
+          <h2 style={style.title}>{title}</h2>
+
+          {isDeleted && <p style={style.delete}>deleted</p>}
+        </div>
 
         <div style={style.icon}>
-          <FontAwesomeIcon icon={faPencilAlt} onClick={onClickEditIcon} />
+          <FontAwesomeIcon
+            icon={faPencilAlt}
+            onClick={(): void => onClickEditIcon && onClickEditIcon(item)}
+          />
 
           <Spacer direction="horizontal" />
 
-          <FontAwesomeIcon icon={faTrashAlt} onClick={_onClickTrashIcon} />
+          {isDeleted ? (
+            <FontAwesomeIcon
+              icon={faRecycle}
+              onClick={(event): void => _onClickRecycleIcon(event, item)}
+            />
+          ) : (
+            <FontAwesomeIcon
+              icon={faTrashAlt}
+              onClick={(event): void => _onClickTrashIcon(event, item)}
+            />
+          )}
         </div>
       </a>
     </div>
@@ -57,5 +89,8 @@ const style: { [key: string]: React.CSSProperties } = {
   },
   icon: {
     display: 'flex',
+  },
+  delete: {
+    color: 'red',
   },
 };

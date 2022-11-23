@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { EditsMenu } from '@components/organisms';
 import { EditsList } from '@components/organisms/edits/edits-list';
 import styles from '@styles/edits.module.scss';
 
@@ -28,7 +29,11 @@ export const Edits = (): JSX.Element => {
     <div className={styles['edits']}>
       <h2>記事一覧</h2>
 
-      <EditsList />
+      <div className={styles['edits--content']}>
+        <EditsList />
+
+        <EditsMenu />
+      </div>
     </div>
   );
 };

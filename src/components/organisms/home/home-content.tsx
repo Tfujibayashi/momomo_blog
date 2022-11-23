@@ -9,7 +9,7 @@ export const HomeContent = (): JSX.Element => {
   const { push } = useRoute();
 
   const handleClickContentBox = (contentId: ContentId): void => {
-    push(contentId.value);
+    push(`content/${contentId.value}`);
   };
 
   return (

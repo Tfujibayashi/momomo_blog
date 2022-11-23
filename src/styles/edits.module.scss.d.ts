@@ -1,5 +1,6 @@
 export type Styles = {
   edits: string;
+  'edits--content': string;
   'edits--list': string;
 };
 

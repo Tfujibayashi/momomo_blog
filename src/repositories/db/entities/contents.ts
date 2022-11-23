@@ -7,5 +7,5 @@ export type ContentEntity = {
   imagePath?: string;
   createdAt: TimeStamp;
   updatedAt: TimeStamp;
-  deletedAt?: TimeStamp;
+  deletedAt: null | TimeStamp;
 };
