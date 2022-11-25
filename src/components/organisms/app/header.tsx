@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 
+import { Button } from '@components/molecules';
 import styles from '@styles/header.module.scss';
 
 import { AuthContextStore, useAuthContext } from '~/hooks';
@@ -19,18 +20,17 @@ export const Header = (): JSX.Element => {
         </h1>
 
         {user ? (
-          <div>
-            <p>
-              <Link to="/edit">記事を書く</Link>
-            </p>
-            <p>
-              <a onClick={handleClickSignOut}>サインアウト</a>
-            </p>
+          <div className={styles.header__button}>
+            <Link to="/edit">
+              <Button label="記事を書く" />
+            </Link>
+
+            <Button label="サインアウト" onClick={handleClickSignOut} />
           </div>
         ) : (
-          <p>
-            <Link to="/sign-in">サインイン</Link>
-          </p>
+          <Link to="/sign-in">
+            <Button label="サインイン" />
+          </Link>
         )}
       </div>
     </header>

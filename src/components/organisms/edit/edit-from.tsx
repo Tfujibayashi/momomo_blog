@@ -10,10 +10,6 @@ export const EditForm = (): JSX.Element => {
   const { inputs, setInputs, init, saveContent } = useEdit();
   const { keyBind } = useKey();
 
-  useEffect(() => {
-    init(content);
-  }, [content, init]);
-
   const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setInputs({
       title: event.target.value,
@@ -33,6 +29,10 @@ export const EditForm = (): JSX.Element => {
   useEffect(() => {
     keyBind('s', handleOnPressSaveShortCutKey);
   }, [handleOnPressSaveShortCutKey, keyBind]);
+
+  useEffect(() => {
+    init(content);
+  }, [content, init]);
 
   return (
     <div>

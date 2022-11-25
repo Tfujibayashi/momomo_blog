@@ -2,7 +2,7 @@ import { TimeStamp } from '~/types';
 
 export type ContentEntity = {
   id?: string;
-  title?: string;
+  title: string;
   text: string;
   imagePath?: string;
   createdAt: TimeStamp;

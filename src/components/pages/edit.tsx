@@ -13,7 +13,7 @@ import { ContentId } from '~/models';
 
 export const Edit = (): JSX.Element => {
   const { user } = useAuthContext() as AuthContextStore;
-  const { content, getContent } = useEditsContext() as EditsContextStore;
+  const { getContent } = useEditsContext() as EditsContextStore;
   const { params, notFoundPage } = useRoute();
 
   useEffect(() => {
@@ -30,8 +30,6 @@ export const Edit = (): JSX.Element => {
 
   return (
     <div>
-      <h2>{content.isEmpty ? '新規作成' : '編集'}</h2>
-
       <EditForm />
     </div>
   );

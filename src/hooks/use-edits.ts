@@ -18,25 +18,6 @@ export const useEdits = () => {
     content: Content.empty(),
   });
 
-  const getContentList = useCallback(async () => {
-    setState({
-      isListGetting: true,
-    });
-
-    try {
-      const contentList = await ContentsRepository.getContentList({ isActive: false });
-
-      setState({
-        contentList,
-      });
-    } catch (e) {
-      showErrorToast((e as Error).message);
-    }
-    setState({
-      isListGetting: false,
-    });
-  }, [ContentsRepository, showErrorToast]);
-
   const getContent = useCallback(
     async (contentId: ContentId) => {
       setState({
@@ -59,6 +40,25 @@ export const useEdits = () => {
     },
     [ContentsRepository, showErrorToast],
   );
+
+  const getContentList = useCallback(async () => {
+    setState({
+      isListGetting: true,
+    });
+
+    try {
+      const contentList = await ContentsRepository.getContentList({ isActive: false });
+
+      setState({
+        contentList,
+      });
+    } catch (e) {
+      showErrorToast((e as Error).message);
+    }
+    setState({
+      isListGetting: false,
+    });
+  }, [ContentsRepository, showErrorToast]);
 
   const addContent = useCallback(async () => {
     setState({
@@ -128,8 +128,8 @@ export const useEdits = () => {
 
   return {
     ...state,
-    getContentList,
     getContent,
+    getContentList,
     addContent,
     deleteContent,
     unDeleteContent,

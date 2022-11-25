@@ -1,5 +1,6 @@
 export type Styles = {
   header: string;
+  header__button: string;
   header__inner: string;
   header__title: string;
 };
