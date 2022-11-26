@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
+import { faEye, faEyeSlash, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { faPencilAlt, faRecycle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -9,8 +9,11 @@ import { Spacer } from './spacer';
 type EditListItemBoxProps<T> = {
   item: T;
   title: string;
+  isPublic?: boolean;
   isDeleted?: boolean;
   onClick?: (() => void) | ((item: T) => void);
+  onClickPublicIcon?: (() => void) | ((item: T) => void);
+  onClickUnPublicIcon?: (() => void) | ((item: T) => void);
   onClickEditIcon?: (() => void) | ((item: T) => void);
   onClickTrashIcon?: (() => void) | ((item: T) => void);
   onClickRecycleIcon?: (() => void) | ((item: T) => void);
@@ -19,12 +22,33 @@ type EditListItemBoxProps<T> = {
 export const EditListItemBox = <T,>({
   item,
   title,
+  isPublic = false,
   isDeleted = false,
   onClick,
+  onClickPublicIcon,
+  onClickUnPublicIcon,
   onClickEditIcon,
   onClickTrashIcon,
   onClickRecycleIcon,
 }: EditListItemBoxProps<T>): JSX.Element => {
+  const _onClickPublicIcon = (
+    event: React.MouseEvent<SVGSVGElement, MouseEvent>,
+    item: T,
+  ): void => {
+    event.stopPropagation();
+
+    onClickPublicIcon && onClickPublicIcon(item);
+  };
+
+  const _onClickUnPublicIcon = (
+    event: React.MouseEvent<SVGSVGElement, MouseEvent>,
+    item: T,
+  ): void => {
+    event.stopPropagation();
+
+    onClickUnPublicIcon && onClickUnPublicIcon(item);
+  };
+
   const _onClickTrashIcon = (event: React.MouseEvent<SVGSVGElement, MouseEvent>, item: T): void => {
     event.stopPropagation();
 
@@ -50,24 +74,48 @@ export const EditListItemBox = <T,>({
         </div>
 
         <div style={style.icon}>
-          <FontAwesomeIcon
-            icon={faPencilAlt}
-            onClick={(): void => onClickEditIcon && onClickEditIcon(item)}
-          />
+          {isPublic
+            ? onClickUnPublicIcon && (
+                <>
+                  <FontAwesomeIcon
+                    icon={faEyeSlash}
+                    onClick={(event): void => _onClickUnPublicIcon(event, item)}
+                  />
+                  <Spacer direction="horizontal" />
+                </>
+              )
+            : onClickPublicIcon && (
+                <>
+                  <FontAwesomeIcon
+                    icon={faEye}
+                    onClick={(event): void => _onClickPublicIcon(event, item)}
+                  />
 
-          <Spacer direction="horizontal" />
+                  <Spacer direction="horizontal" />
+                </>
+              )}
 
-          {isDeleted ? (
-            <FontAwesomeIcon
-              icon={faRecycle}
-              onClick={(event): void => _onClickRecycleIcon(event, item)}
-            />
-          ) : (
-            <FontAwesomeIcon
-              icon={faTrashAlt}
-              onClick={(event): void => _onClickTrashIcon(event, item)}
-            />
+          {onClickEditIcon && (
+            <>
+              <FontAwesomeIcon icon={faPencilAlt} onClick={(): void => onClickEditIcon(item)} />
+
+              <Spacer direction="horizontal" />
+            </>
           )}
+
+          {isDeleted
+            ? onClickRecycleIcon && (
+                <FontAwesomeIcon
+                  icon={faRecycle}
+                  onClick={(event): void => _onClickRecycleIcon(event, item)}
+                />
+              )
+            : onClickRecycleIcon && (
+                <FontAwesomeIcon
+                  icon={faTrashAlt}
+                  onClick={(event): void => _onClickTrashIcon(event, item)}
+                />
+              )}
         </div>
       </a>
     </div>

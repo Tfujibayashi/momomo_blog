@@ -1,3 +1,4 @@
 export type GetContentsQuery = {
-  isActive: boolean;
+  onlyActive: boolean;
+  onlyPublic: boolean;
 };

@@ -19,13 +19,14 @@ export class ContentsMapper {
   }
 
   mapContent(entity: ContentEntity): Content {
-    const { id, title, text, imagePath, createdAt, updatedAt, deletedAt } = entity;
+    const { id, title, text, imagePath, isPublic, createdAt, updatedAt, deletedAt } = entity;
 
     return Content.create({
       id: id ? ContentId.create(id) : ContentId.empty(),
-      title: title ? ContentTitle.create(title) : ContentTitle.empty(),
+      title: ContentTitle.create(title),
       text: ContentText.create(text),
-      imagePath: imagePath ? ImagePath.create(imagePath) : ImagePath.empty(),
+      imagePath: ImagePath.create(imagePath),
+      isPublic,
       createdAt: DateTime.create(createdAt.toDate()),
       updatedAt: DateTime.create(updatedAt.toDate()),
       deletedAt: deletedAt ? DateTime.create(deletedAt.toDate()) : DateTime.empty(),

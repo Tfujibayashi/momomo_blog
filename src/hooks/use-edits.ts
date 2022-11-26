@@ -14,6 +14,7 @@ export const useEdits = () => {
     isGetting: false,
     isAdding: false,
     isDeleting: false,
+    isPublishing: false,
     contentList: ContentList.empty(),
     content: Content.empty(),
   });
@@ -47,7 +48,10 @@ export const useEdits = () => {
     });
 
     try {
-      const contentList = await ContentsRepository.getContentList({ isActive: false });
+      const contentList = await ContentsRepository.getContentList({
+        onlyActive: false,
+        onlyPublic: false,
+      });
 
       setState({
         contentList,
@@ -126,6 +130,52 @@ export const useEdits = () => {
     [ContentsRepository, showErrorToast, showSuccessToast],
   );
 
+  const publishContent = useCallback(
+    async (contentId: ContentId, callBack?: () => Promise<void>) => {
+      setState({
+        isPublishing: true,
+      });
+
+      try {
+        await ContentsRepository.publishContent(contentId);
+
+        showSuccessToast('記事を公開しました');
+
+        callBack && (await callBack());
+      } catch (e) {
+        showErrorToast((e as Error).message);
+      }
+
+      setState({
+        isPublishing: false,
+      });
+    },
+    [ContentsRepository, showErrorToast, showSuccessToast],
+  );
+
+  const unPublishContent = useCallback(
+    async (contentId: ContentId, callBack?: () => Promise<void>) => {
+      setState({
+        isPublishing: true,
+      });
+
+      try {
+        await ContentsRepository.unPublishContent(contentId);
+
+        showSuccessToast('記事を非公開にしました');
+
+        callBack && (await callBack());
+      } catch (e) {
+        showErrorToast((e as Error).message);
+      }
+
+      setState({
+        isPublishing: false,
+      });
+    },
+    [ContentsRepository, showErrorToast, showSuccessToast],
+  );
+
   return {
     ...state,
     getContent,
@@ -133,6 +183,8 @@ export const useEdits = () => {
     addContent,
     deleteContent,
     unDeleteContent,
+    publishContent,
+    unPublishContent,
   };
 };
 

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import { EditForm } from '@components/organisms';
+import styles from '@styles/edit.module.scss';
 
 import {
   AuthContextStore,
@@ -29,7 +30,7 @@ export const Edit = (): JSX.Element => {
   }
 
   return (
-    <div>
+    <div className={styles.edit}>
       <EditForm />
     </div>
   );

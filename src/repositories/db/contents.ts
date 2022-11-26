@@ -16,21 +16,19 @@ import {
   where,
 } from 'firebase/firestore';
 
-import { Content, ContentId } from '~/models';
-import { ContentEntity, ContentsParser, GetContentsQuery } from '~/repositories/db';
+import { ContentId } from '~/models';
+import { ContentEntity, GetContentsQuery, SaveContentRequestBody } from '~/repositories/db';
 
 const COLLECTION_NAME = 'contents';
 
 export class ContentsDataBase {
   private collectionName;
   private db: Firestore;
-  private parser: ContentsParser;
   private collectionRef: CollectionReference<ContentEntity>;
 
   constructor(db: Firestore) {
     this.db = db;
     this.collectionName = COLLECTION_NAME;
-    this.parser = new ContentsParser();
 
     this.collectionRef = collection(this.db, this.collectionName).withConverter(
       this.contentConverter,
@@ -63,8 +61,12 @@ export class ContentsDataBase {
   public getContents = async (_query: GetContentsQuery): Promise<ContentEntity[]> => {
     let q = query(this.collectionRef);
 
-    if (_query.isActive) {
+    if (_query.onlyActive) {
       q = query(this.collectionRef, where('deletedAt', '==', null));
+    }
+
+    if (_query.onlyPublic) {
+      q = query(this.collectionRef, where('isPublic', '==', true));
     }
 
     const snapshot = await getDocs(q);
@@ -80,16 +82,17 @@ export class ContentsDataBase {
     return snapshot.data();
   };
 
-  public addContent = async (content: Content): Promise<string> => {
+  public addContent = async (): Promise<string> => {
     const collectionRef = collection(this.db, this.collectionName).withConverter(
       this.contentConverter,
     );
 
-    const request = this.parser.parseAddContentRequestBody(content);
-
     return (
       await addDoc(collectionRef, {
-        ...request,
+        title: '',
+        text: '',
+        imagePath: '',
+        isPublic: false,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
         deletedAt: null,
@@ -97,12 +100,8 @@ export class ContentsDataBase {
     ).id;
   };
 
-  public saveContent = async (content: Content): Promise<void> => {
-    const docRef = doc(this.collectionRef, content.props.id.value).withConverter(
-      this.contentConverter,
-    );
-
-    const request = this.parser.parseSaveContentRequestBody(content);
+  public saveContent = async (request: SaveContentRequestBody): Promise<void> => {
+    const docRef = doc(this.collectionRef, request.id).withConverter(this.contentConverter);
 
     await updateDoc(docRef, {
       ...request,
@@ -110,16 +109,32 @@ export class ContentsDataBase {
     });
   };
 
-  public deleteContent = async (contentId: ContentId): Promise<void> => {
-    const docRef = doc(this.collectionRef, contentId.value).withConverter(this.contentConverter);
+  public publishContent = async (contentId: string): Promise<void> => {
+    const docRef = doc(this.collectionRef, contentId).withConverter(this.contentConverter);
+
+    await updateDoc(docRef, {
+      isPublic: true,
+    });
+  };
+
+  public unPublishContent = async (contentId: string): Promise<void> => {
+    const docRef = doc(this.collectionRef, contentId).withConverter(this.contentConverter);
+
+    await updateDoc(docRef, {
+      isPublic: false,
+    });
+  };
+
+  public deleteContent = async (contentId: string): Promise<void> => {
+    const docRef = doc(this.collectionRef, contentId).withConverter(this.contentConverter);
 
     await updateDoc(docRef, {
       deletedAt: serverTimestamp(),
     });
   };
 
-  public unDeleteContent = async (contentId: ContentId): Promise<void> => {
-    const docRef = doc(this.collectionRef, contentId.value).withConverter(this.contentConverter);
+  public unDeleteContent = async (contentId: string): Promise<void> => {
+    const docRef = doc(this.collectionRef, contentId).withConverter(this.contentConverter);
 
     await updateDoc(docRef, {
       deletedAt: null,

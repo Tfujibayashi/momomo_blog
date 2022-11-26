@@ -1,4 +1,5 @@
 export type Styles = {
+  edit: string;
   'edit--form': string;
   'edit--form--preview': string;
   'edit--title': string;
