@@ -1,8 +1,8 @@
 import ContentsRepository from './contents';
-import { db } from '~/firebase';
+import { db, storage } from '~/firebase';
 
 const Repositories = {
-  ContentsRepository: new ContentsRepository(db),
+  ContentsRepository: new ContentsRepository({ db, storage }),
 };
 
 export default Repositories;

@@ -1,6 +1,8 @@
 import { Firestore } from 'firebase/firestore';
+import { FirebaseStorage } from 'firebase/storage';
 
 import { ContentsDataBase } from './db/contents';
+import { Storage } from './db/storage';
 import { Content, ContentId, ContentList } from '~/models';
 import { ContentEntity, ContentsMapper, ContentsParser, GetContentsQuery } from '~/repositories/db';
 
@@ -9,12 +11,14 @@ export default class ContentsRepository {
   private parser: ContentsParser;
 
   private db;
+  private storage;
 
-  constructor(db: Firestore) {
+  constructor(props: { db: Firestore; storage: FirebaseStorage }) {
     this.mapper = new ContentsMapper();
     this.parser = new ContentsParser();
 
-    this.db = new ContentsDataBase(db);
+    this.db = new ContentsDataBase(props.db);
+    this.storage = new Storage(props.storage);
   }
 
   public getContentList = async (
@@ -57,5 +61,11 @@ export default class ContentsRepository {
 
   public unDeleteContent = async (contentId: ContentId): Promise<void> => {
     await this.db.unDeleteContent(contentId.value);
+  };
+
+  public uploadThumbnail = async (contentId: ContentId, file: File): Promise<void> => {
+    const imagePath = await this.storage.uploadFile(contentId._value, file);
+
+    await this.db.uploadThumbnail(contentId.value, imagePath);
   };
 }

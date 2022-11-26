@@ -12,11 +12,16 @@ export const EditsList = (): JSX.Element => {
     unDeleteContent,
     publishContent,
     unPublishContent,
+    uploadThumbnail,
   } = useEditsContext() as EditsContextStore;
   const { push } = useRoute();
 
   const handleClickEditListItemBox = (content: Content): void => {
     push(content.props.id.value);
+  };
+
+  const handleClickCameraIcon = (file: File, content: Content): void => {
+    void uploadThumbnail(content.props.id, file);
   };
 
   const handleClickDeleteIcon = (content: Content): void => {
@@ -42,9 +47,11 @@ export const EditsList = (): JSX.Element => {
           <EditListItemBox<Content>
             item={content}
             title={content.props.title.value}
+            imagePath={content.props.imagePath.value}
             isDeleted={!content.isActive}
             isPublic={content.props.isPublic}
             onClick={handleClickEditListItemBox}
+            onClickCameraIcon={handleClickCameraIcon}
             onClickPublicIcon={handleClickPublicIcon}
             onClickUnPublicIcon={handleClickUnPublicIcon}
             onClickEditIcon={handleClickEditListItemBox}

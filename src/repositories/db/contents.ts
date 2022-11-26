@@ -140,4 +140,12 @@ export class ContentsDataBase {
       deletedAt: null,
     });
   };
+
+  public uploadThumbnail = async (contentId: string, imagePath: string): Promise<void> => {
+    const docRef = doc(this.collectionRef, contentId).withConverter(this.contentConverter);
+
+    await updateDoc(docRef, {
+      imagePath,
+    });
+  };
 }

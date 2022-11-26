@@ -15,6 +15,7 @@ export const useEdits = () => {
     isAdding: false,
     isDeleting: false,
     isPublishing: false,
+    isUploading: false,
     contentList: ContentList.empty(),
     content: Content.empty(),
   });
@@ -176,6 +177,29 @@ export const useEdits = () => {
     [ContentsRepository, showErrorToast, showSuccessToast],
   );
 
+  const uploadThumbnail = useCallback(
+    async (contentId: ContentId, file: File, callBack?: () => Promise<void>) => {
+      setState({
+        isUploading: true,
+      });
+
+      try {
+        await ContentsRepository.uploadThumbnail(contentId, file);
+
+        showSuccessToast('サムネイルを設定しました');
+
+        callBack && (await callBack());
+      } catch (e) {
+        showErrorToast((e as Error).message);
+      }
+
+      setState({
+        isUploading: false,
+      });
+    },
+    [ContentsRepository, showErrorToast, showSuccessToast],
+  );
+
   return {
     ...state,
     getContent,
@@ -185,6 +209,7 @@ export const useEdits = () => {
     unDeleteContent,
     publishContent,
     unPublishContent,
+    uploadThumbnail,
   };
 };
 
