@@ -8,4 +8,7 @@ module.exports = {
       '@components': path.resolve(__dirname, 'src/components/'),
     },
   },
+  eslint: {
+    enable: false,
+  },
 };

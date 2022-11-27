@@ -1,8 +1,8 @@
 export type Styles = {
   edit: string;
-  'edit--form': string;
-  'edit--form--preview': string;
-  'edit--title': string;
+  edit__form: string;
+  edit__form__preview: string;
+  edit__title: string;
 };
 
 export type ClassNames = keyof Styles;

@@ -41,7 +41,7 @@ export const EditsList = (): JSX.Element => {
   };
 
   return (
-    <div className={styles['edits--list']}>
+    <div className={styles['edits__list']}>
       {contentList.value.map((content, index) => (
         <div key={index}>
           <EditListItemBox<Content>

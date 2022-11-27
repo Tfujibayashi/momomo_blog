@@ -29,7 +29,7 @@ export const Edits = (): JSX.Element => {
     <div className={styles['edits']}>
       <h2>記事一覧</h2>
 
-      <div className={styles['edits--content']}>
+      <div className={styles['edits__content']}>
         <EditsList />
 
         <EditsMenu />

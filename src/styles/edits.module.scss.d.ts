@@ -1,7 +1,7 @@
 export type Styles = {
   edits: string;
-  'edits--content': string;
-  'edits--list': string;
+  edits__content: string;
+  edits__list: string;
 };
 
 export type ClassNames = keyof Styles;

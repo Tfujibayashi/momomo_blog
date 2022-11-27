@@ -37,16 +37,16 @@ export const EditForm = (): JSX.Element => {
   return (
     <div>
       <input
-        className={styles['edit--title']}
+        className={styles['edit__title']}
         placeholder="タイトル"
         value={inputs.title}
         onChange={handleChangeTitle}
       />
 
-      <div className={styles['edit--form']}>
+      <div className={styles['edit__form']}>
         <textarea value={inputs.text} onChange={handleChangeText} />
 
-        <div className={styles['edit--form--preview']}>
+        <div className={styles['edit__form__preview']}>
           <Markdown markdownText={inputs.text} />
         </div>
       </div>

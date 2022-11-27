@@ -1,13 +1,13 @@
 .home {
   margin-top: 2rem;
 
-  &--content {
+  &__content {
     display: flex;
     flex-wrap: wrap;
     gap: 4rem 3rem;
     justify-content: center;
 
-    &--item {
+    &__item {
       width: 30%;
       min-width: 360px;
     }

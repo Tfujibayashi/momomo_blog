@@ -1,11 +1,11 @@
 .edit {
   margin-top: 4rem;
 
-  &--title {
+  &__title {
     width: 100%;
   }
 
-  &--form {
+  &__form {
     display: flex;
     margin-top: 2rem;
 
@@ -14,7 +14,7 @@
       height: 100vh;
     }
 
-    &--preview {
+    &__preview {
       width: 100%;
     }
   }

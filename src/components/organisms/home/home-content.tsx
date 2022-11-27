@@ -13,9 +13,9 @@ export const HomeContent = (): JSX.Element => {
   };
 
   return (
-    <div className={styles['home--content']}>
+    <div className={styles['home__content']}>
       {contentList.value.map((content, index) => (
-        <div key={index} className={styles['home--content--item']}>
+        <div key={index} className={styles['home__content__item']}>
           <ContentBox
             title={content.props.title.value}
             imageUri={content.props.imagePath.value}
